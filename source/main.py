@@ -5,6 +5,8 @@
 Description of script
 """
 
+# TODO rewrite with pyqt5 and embed browser: https://codeloop.org/python-how-to-make-browser-in-pyqt5-with-pyqtwebengine/
+
 import argparse
 import pyperclip
 import tkinter as tk
@@ -46,25 +48,38 @@ class Application(tk.Frame):
         self.grid()
         self.data_directory=self.create_data_directory("tmp_data")
         self.create_widgets()
+        self.website="google"
         self.current_OCR_text=None
 
         self.master.bind("q", lambda event: self.master.destroy())
         self.master.bind("s", lambda event: self.take_screenshot())
         self.master.bind("t", lambda event: self.translate())
+        self.master.bind("g", lambda event: self.quick_translate())
         self.master.bind("c", lambda event: self.switch_reader())
+        self.master.bind("p", lambda event: self.switch_website())
 
     def create_data_directory(self, directory_name):
         full_dir_name=os.path.join(GIT_REPO_DIR, directory_name)
         os.makedirs(full_dir_name, exist_ok=True)
         return full_dir_name
 
+    def switch_website(self):
+        if self.website=="google":
+            self.website="mdbg"
+            self.switch_website_button["text"]="Switch from mdbg to google translation (p)"
+        elif self.website=="mdbg":
+            self.website="google"
+            self.switch_website_button["text"]="Switch from google to mdbg translation (p)"
+        else:
+            print("WARNING: this makes no sense!")
+
     def switch_reader(self):
         if self.OCR_obj.reader is OCRReader.sim_reader:
             self.OCR_obj.reader=OCRReader.tra_reader
-            self.switch_reader_button["text"] = "Switch to simplified Chinese OCR"
+            self.switch_reader_button["text"] = "Switch to simplified Chinese OCR (c)"
         elif self.OCR_obj.reader is OCRReader.tra_reader:
             self.OCR_obj.reader=OCRReader.sim_reader
-            self.switch_reader_button["text"] = "Switch to traditional Chinese OCR"
+            self.switch_reader_button["text"] = "Switch to traditional Chinese OCR (c)"
         else:
             print("WARNING: this makes no sense!")
 
@@ -83,8 +98,14 @@ class Application(tk.Frame):
             self.update_text(self.current_OCR_text)
 
     def translate(self):
-        webbrowser.open(f"https://translate.google.com/?hl=de&sl=auto&tl=en&text={self.current_OCR_text}&op=translate")
+        if self.website=="google":
+            webbrowser.open(f"https://translate.google.com/?hl=de&sl=auto&tl=en&text={self.current_OCR_text}&op=translate")
+        elif self.website=="mdbg":
+            webbrowser.open(f"https://www.mdbg.net/chinese/dictionary?page=worddict&wdrst=0&wdqtm=0&wdqcham=1&wdqt={self.current_OCR_text}")
 
+    def quick_translate(self):
+        self.take_screenshot()
+        self.translate()
 
     def create_widgets(self):
 
@@ -92,6 +113,11 @@ class Application(tk.Frame):
         self.switch_reader_button["text"] = "Switch to traditional Chinese OCR (c)"
         self.switch_reader_button["command"] = self.switch_reader
         self.switch_reader_button.grid()
+
+        self.switch_website_button = tk.Button(self)
+        self.switch_website_button["text"] = "Switch from google to mdbg translation (p)"
+        self.switch_website_button["command"] = self.switch_website
+        self.switch_website_button.grid()
 
         self.take_screenshot_button = tk.Button(self)
         self.take_screenshot_button["text"] = "Take a Screenshot (s)"
@@ -102,6 +128,12 @@ class Application(tk.Frame):
         self.translate_button["text"] = "Translate (t)"
         self.translate_button["command"] = self.translate
         self.translate_button.grid()
+
+        self.quick_translate_button = tk.Button(self)
+        self.quick_translate_button["text"] = "Screenshot & Translate (g)"
+        self.quick_translate_button["command"] = self.quick_translate
+        self.quick_translate_button.grid()
+
 
 
         # TODO chinese characters are cut of at the top atm
