@@ -70,7 +70,8 @@ class Application(tk.Frame):
 
     def update_text(self, text):
         self.Text.delete("1.0", "end")
-        self.Text.insert(tk.END, text)
+        self.Text.insert(tk.END, "\n"+text)
+        self.Text.tag_add("center", 1.0, "end")
         self.Text.update()
 
     def take_screenshot(self):
@@ -103,9 +104,12 @@ class Application(tk.Frame):
         self.translate_button.grid()
 
 
-        self.Text = tk.Text(self, height=10, width=50)
+        # TODO chinese characters are cut of at the top atm
+        self.Text = tk.Text(self,font=("Courier", 24), height=10, width=50)
         self.Text.grid()
-        self.Text.insert(tk.END, "No characters caputred so far!")
+        self.Text.tag_configure("center", justify='center')
+        self.Text.insert(tk.END, "\nNo characters caputred so far!")
+        self.Text.tag_add("center", 1.0, "end")
 
         self.quit = tk.Button(
             self, text="QUIT (q)", fg="red", command=self.master.destroy
