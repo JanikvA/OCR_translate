@@ -19,8 +19,7 @@ GIT_REPO_DIR=Path(__file__).absolute().parent.parent
 # fmt: off
 def comandline_argument_parser(parser=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-s","--screenshot", action='store_true', help="Take a screenshot, copy resulting OCR to clipboard and translate")
-    parser.add_argument("-s","--screenshot", action='store_true', help="Take a screenshot, copy resulting OCR to clipboard and translate")
+    #parser.add_argument("-s","--screenshot", action='store_true', help="Take a screenshot, copy resulting OCR to clipboard and translate")
     return parser
 # fmt: on
 
