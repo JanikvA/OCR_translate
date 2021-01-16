@@ -5,9 +5,6 @@
 Description of script
 """
 
-# TODO rewrite with pyqt5 and embed browser: https://codeloop.org/python-how-to-make-browser-in-pyqt5-with-pyqtwebengine/
-
-import argparse
 import pyperclip
 import tkinter as tk
 import os
@@ -17,14 +14,6 @@ import subprocess
 import webbrowser
 
 GIT_REPO_DIR = Path(__file__).absolute().parent.parent
-
-# fmt: off
-def comandline_argument_parser(parser=None):
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    #parser.add_argument("-s","--screenshot", action='store_true', help="Take a screenshot, copy resulting OCR to clipboard and translate")
-    return parser
-# fmt: on
-
 
 def clearScreen(frame):
     for widget in frame.winfo_children():
@@ -48,8 +37,8 @@ class OCRReader:
 class Application(tk.Frame):
 
     translation_provider_url = {
-        "DeepL": "https://www.deepl.com/translator#zh/de/TRANSLATETHIS%0A",
         "Google": "https://translate.google.com/?hl=de&sl=auto&tl=en&text=TRANSLATETHIS&op=translate",
+        "DeepL": "https://www.deepl.com/translator#zh/de/TRANSLATETHIS%0A",
         "MDBG": "https://www.mdbg.net/chinese/dictionary?page=worddict&wdrst=0&wdqtm=0&wdqcham=1&wdqt=TRANSLATETHIS",
     }
 
@@ -175,13 +164,11 @@ class Application(tk.Frame):
         self.quit.grid()
 
 
-def main(args):
+def main():
     root = tk.Tk()
     app = Application(master=root)
     app.mainloop()
 
 
 if __name__ == "__main__":
-    parser = comandline_argument_parser()
-    command_line_arguments = parser.parse_args()
-    main(command_line_arguments)
+    main()
