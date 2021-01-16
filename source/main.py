@@ -35,7 +35,8 @@ class OCRReader:
     sim_reader = easyocr.Reader(["ch_sim", "en"])
     tra_reader = easyocr.Reader(["ch_tra", "en"])
 
-    reader_modes = {"simplified": sim_reader, "traditional": tra_reader}
+    reader_modes = {"traditional": tra_reader,
+                    "simplified": sim_reader}
 
     def __init__(self):
         pass
@@ -47,9 +48,9 @@ class OCRReader:
 class Application(tk.Frame):
 
     translation_provider_url = {
+        "DeepL": "https://www.deepl.com/translator#zh/de/TRANSLATETHIS%0A",
         "Google": "https://translate.google.com/?hl=de&sl=auto&tl=en&text=TRANSLATETHIS&op=translate",
         "MDBG": "https://www.mdbg.net/chinese/dictionary?page=worddict&wdrst=0&wdqtm=0&wdqcham=1&wdqt=TRANSLATETHIS",
-        "DeepL": "https://www.deepl.com/translator#zh/de/TRANSLATETHIS%0A",
     }
 
     def __init__(self, master=None):
