@@ -15,6 +15,8 @@ import webbrowser
 
 GIT_REPO_DIR = Path(__file__).absolute().parent.parent
 
+# TODO check https://github.com/PaddlePaddle/PaddleOCR as alternative
+
 def clearScreen(frame):
     for widget in frame.winfo_children():
         widget.destroy()
